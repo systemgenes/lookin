@@ -1,0 +1,26 @@
+Instructions to compile :
+
+1.Open command line and enter into the directory which contains all the codes of project.
+2.Write "make"
+
+
+Instructions to use :
+
+1. On command line , run the executable file "lookin"
+	
+	e.g, 
+	
+	shubham@shubham-laptop:~$ executable-file-name <directory name> <keyword to search>
+	
+	shubham@shubham-laptop:~$ ./lookin <directory-name> <keyword to search>
+	
+	
+	If the executatble file is not in home directory but its in some other direcory,say , /home/shubham/Applications ,then either first goto that directory and then run the executable or do as below
+	
+	shubham@shubham-laptop:~$ /home/shubham/Applications/lookin <directory-name> <keyword to search>
+	
+	e.g,
+	
+	we want to search "while" keyword in directory "/home/shubham/Downloads"
+	
+	shubham@shubham-laptop:~$./lookin /home/shubham/Downloads while
