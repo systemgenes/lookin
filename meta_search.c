@@ -15,7 +15,7 @@
 
 #include<stdio.h>
 #include<string.h>
-/*void search(char f[50],char str[40]);
+/*void meta_search(char f[50],char str[40]);
 void main()
 {
   char f[50],str[40];
@@ -26,7 +26,7 @@ void main()
   search(f,str);
 }
 */
-int search(char f[50],char str[40])
+int meta_search(char f[50],char str[40])
 {
  FILE*fp;
  fp=fopen(f,"r");
@@ -47,15 +47,10 @@ int search(char f[50],char str[40])
     else
       {
         flag = 1;
-        printf("%s : keyword found at Line %d\n",f,count);
-        str1=str;
+        fclose(fp);
+        return 1;
       }
-     if(ch=='\n')
-       {
-        count++;
-        fflush(NULL);
-       }
     }
    fclose(fp);
-   return(flag);
+   return 0;
 }

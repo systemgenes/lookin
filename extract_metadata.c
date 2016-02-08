@@ -1,4 +1,5 @@
 // Copyright (C) 2016 Ravi Kant Pandey
+// Mail at systemgenes@gmail.com for any queries.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,47 +16,33 @@
 
 #include<stdio.h>
 #include<string.h>
-/*void search(char f[50],char str[40]);
-void main()
+#include "dir_content.h"
+
+#define MAX_SIZE 1024
+
+int extract_metadata(char path[])
 {
-  char f[50],str[40];
-  printf("enter the filename");
-  scanf("%s",f);
-  printf("enter the string");
-  scanf("%s",str);
-  search(f,str);
-}
-*/
-int search(char f[50],char str[40])
-{
- FILE*fp;
- fp=fopen(f,"r");
- if(fp == NULL)
-    return;
- int count=1,flag=0;
- char ch;
- char* str1 = str;
- while((ch=fgetc(fp))!=EOF)
+  FILE* fp=NULL;
+//  char username[64]=getlogin();
+   char directory[] = "/tmp/temp_file.txt";
+   fp= fopen(directory ,"w+");
+   if(fp==NULL)
    {
-    if(*str1!='\0')
-      {
-        if(ch == *str1)
-           str1++;
-        else
-           str1=str;
-      }
-    else
-      {
-        flag = 1;
-        printf("%s : keyword found at Line %d\n",f,count);
-        str1=str;
-      }
-     if(ch=='\n')
-       {
-        count++;
-        fflush(NULL);
-       }
+    printf("Temporary File location Error.extract_metadata() function\n");
+    return -1;
+   }
+    char temp[MAX_SIZE];
+    sprintf(temp, "extract \"%s\" > \"%s\"",path,directory);
+        fclose(fp);
+    FILE *file_p = popen(temp, "r");
+    if (!file_p)
+    {
+     perror("popen :");
+     return -1;
     }
-   fclose(fp);
-   return(flag);
+    char buffer[MAX_SIZE];
+   fgets(buffer, sizeof(buffer), file_p);
+    pclose(file_p);
+    //fputs(buffer,fp);
+    return 0;
 }

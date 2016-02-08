@@ -1,3 +1,19 @@
+// Copyright (C) 2016 Ravi Kant Pandey
+// Mail at systemgenes@gmail.com for any queries.
+
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
@@ -39,7 +55,7 @@ int id_search(char f[1024],char str[128])
  if(fp == NULL)
    {
      printf("Error opening file: No such file.\n");
-     exit(0);
+     return 0;
    }
 int count=1;
 int len=0;
@@ -47,37 +63,44 @@ char ch,next_ch;
 char* str1 = str;
 while((ch=fgetc(fp))!=EOF)
  {
+  //count=count+check(ch);
   if(ch == '"')
    { 
-     while((ch=fgetc(fp))!='"');
+     while((ch=fgetc(fp))!='"')
+     {if(ch==EOF)goto exit;}
      ch=fgetc(fp);
      count=count+check(ch);
    }
-  /* 
+
   if(ch == '/')
   {
-   ch = fgetc(fp);
+    if((ch = fgetc(fp))==EOF)goto exit;
    if(ch == '/')
    {
-     while((ch=fgetc(fp)!='\n'));
-     count++;
+     while((ch=fgetc(fp)!='\n'))
+     {
+      if(ch==EOF)goto exit;
+     }
+     if(ch=='\n')count++;
    }
    else if(ch == '*')
    {
     while(1)
      {
       ch=fgetc(fp);
+            if(ch==EOF)goto exit;
       count=count+check(ch);
       if(ch== '*')
       {
         ch=fgetc(fp);
+             if(ch==EOF)goto exit;
         count=count+check(ch);
         if(ch=='/')
         break;
       }   
      }
    }
-  }*/
+  }
   if(*str1!='\0')
     {
         if(ch == *str1)
@@ -95,6 +118,7 @@ while((ch=fgetc(fp))!=EOF)
         len=strlen(str);
         fseek(fp,-(len+2),SEEK_CUR);
         next_ch = fgetc(fp);
+        if(next_ch==EOF)goto exit;
         count=count+check(next_ch);
         fseek(fp,len,SEEK_CUR);
        
@@ -123,20 +147,24 @@ while((ch=fgetc(fp))!=EOF)
              while(next_ch == ' ')
                { 
                    next_ch=fgetc(temp);
-                   count=count+check(next_ch);
+                   if(next_ch==EOF)goto exit;
+                   //count=count+check(next_ch);
                }
              if(next_ch =='(')
                {
                    next_ch=fgetc(temp);
-                   count=count+check(next_ch);
+                   if(next_ch==EOF)goto exit;
+                   //count=count+check(next_ch);
                    while(next_ch!=')')
                      {
                          next_ch = fgetc(temp);
+                         if(next_ch==EOF)goto exit;
                      }
                    next_ch=fgetc(temp);
                    while(next_ch == ' ' || next_ch == '\n')
                      {
                          next_ch= fgetc(temp);
+                         if(next_ch==EOF)goto exit;
                      }
                    if(next_ch == ';')
                      {
@@ -162,6 +190,7 @@ last_statement:
    if(ch=='\n')
    {
     count++;
+    fflush(NULL);
    }
  }
 exit:
